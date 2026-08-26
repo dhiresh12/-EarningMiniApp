@@ -1,11 +1,3 @@
-r"""
-EarningMiniApp Core Engine
-<environment_details>
-Current time: 2026-08-26T12:30:01+05:30
-Working directory: C:\Users\dhiresh\OneDrive\Desktop\EarningMiniApp
-Workspace root folder: C:\Users\dhiresh\OneDrive\Desktop\EarningMiniApp
-</environment_details>
-"""
 from __future__ import annotations
 
 import json
@@ -3292,6 +3284,5 @@ class BotEngine:
             if p.get("purchase_id") == purchase_id:
                 return dict(p)
         return {}
-
 
 

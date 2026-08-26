@@ -1,10 +1,3 @@
-# EarningMiniApp Dependencies
-# <environment_details>
-# Current time: 2026-08-26T12:21:15+05:30
-# Working directory: C:\Users\dhiresh\OneDrive\Desktop\bot_3
-# Workspace root folder: C:\Users\dhiresh\OneDrive\Desktop\bot_3
-# </environment_details>
-
 Flask>=2.3.0
 gunicorn>=21.2.0
 requests>=2.31.0
@@ -13,4 +6,3 @@ mongomock>=4.1.0
 python-dotenv>=1.0.0
 flask-limiter>=3.5.0
 flask-cors>=4.0.0
-

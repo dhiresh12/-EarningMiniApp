@@ -1,10 +1,7 @@
-r"""
-EarningMiniApp Route Blueprints
-<environment_details>
-Current time: 2026-08-26T12:21:15+05:30
-Working directory: C:\Users\dhiresh\OneDrive\Desktop\bot_3
-Workspace root folder: C:\Users\dhiresh\OneDrive\Desktop\bot_3
-</environment_details>
+"""Route blueprints package.
+
+Each feature area lives in its own module so one broken endpoint
+does not prevent the rest of the app from starting.
 """
 from __future__ import annotations
 
@@ -59,7 +56,6 @@ def register_all_blueprints(app) -> None:
         "app.routes.affiliate",
         "app.routes.premium",
         "app.routes.insights",
-        "app.routes.health",
     ]
     for module_name in modules:
         try:
@@ -69,4 +65,3 @@ def register_all_blueprints(app) -> None:
                 app.register_blueprint(child_bp)
         except Exception as exc:  # noqa: BLE001
             print(f"[routes][warn] Skipping {module_name}: {exc}")
-

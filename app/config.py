@@ -1,11 +1,3 @@
-r"""
-EarningMiniApp Configuration
-<environment_details>
-Current time: 2026-08-26T12:21:15+05:30
-Working directory: C:\Users\dhiresh\OneDrive\Desktop\bot_3
-Workspace root folder: C:\Users\dhiresh\OneDrive\Desktop\bot_3
-</environment_details>
-"""
 from __future__ import annotations
 
 import os
@@ -37,4 +29,3 @@ def load_config() -> AppConfig:
         host=os.getenv("HOST", "0.0.0.0"),
         port=int(os.getenv("PORT", "5000")),
     )
-
