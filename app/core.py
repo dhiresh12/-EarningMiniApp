@@ -376,6 +376,12 @@ class UserProfile:  # Phase 1: Expanded UserProfile
     # --- PIN lock for withdrawals ---
     pin_hash: Optional[str] = None
     pin_set: bool = False
+    # --- Standalone Auth ---
+    phone_number: str = ""
+    email: str = ""
+    password_hash: str = ""
+    otp_code: str = ""
+    otp_expires_at: Optional[str] = None
     # --- A/B testing ---
     ab_variant: str = "default"
     # --- Achievement sharing rewards ---
@@ -916,6 +922,73 @@ class BotEngine:
                     self.process_successful_invite(inviter_id, user_id)
                 self._save_user(self.users[user_id])
             return self.users[user_id]
+
+    @staticmethod
+    def _hash_password(password: str) -> str:
+        import hashlib
+        return hashlib.sha256(password.encode()).hexdigest()
+
+    @staticmethod
+    def _verify_password(password: str, password_hash: str) -> bool:
+        import hashlib
+        return hashlib.sha256(password.encode()).hexdigest() == password_hash
+
+    @staticmethod
+    def _generate_otp() -> str:
+        import random
+        return str(random.randint(100000, 999999))
+
+    def register_with_phone(self, phone_number: str, password: str, name: str = "") -> tuple[bool, str, Optional[UserProfile]]:
+        with self._get_user_lock(0):
+            existing = next((u for u in self.users.values() if u.phone_number == phone_number), None)
+            if existing:
+                return False, "Phone number already registered.", None
+            user_id = hash(phone_number + str(self._get_utc_now())) % (2**31)
+            while user_id in self.users:
+                user_id = (user_id + 1) % (2**31)
+            profile = UserProfile(
+                user_id=user_id,
+                name=_sanitize_text(name, max_length=50) or "User",
+                phone_number=phone_number,
+                password_hash=self._hash_password(password),
+                registered_at=self._get_utc_now().isoformat(),
+            )
+            self.users[user_id] = profile
+            self._save_user(profile)
+            return True, "Registration successful.", profile
+
+    def login_with_phone(self, phone_number: str, password: str) -> tuple[bool, str, Optional[UserProfile]]:
+        profile = next((u for u in self.users.values() if u.phone_number == phone_number), None)
+        if not profile:
+            return False, "Phone number not registered.", None
+        if not profile.password_hash:
+            return False, "Please register first.", None
+        if not self._verify_password(password, profile.password_hash):
+            return False, "Invalid password.", None
+        return True, "Login successful.", profile
+
+    def generate_and_send_otp(self, phone_number: str) -> tuple[bool, str]:
+        profile = next((u for u in self.users.values() if u.phone_number == phone_number), None)
+        if not profile:
+            return False, "Phone number not registered."
+        otp = self._generate_otp()
+        profile.otp_code = otp
+        profile.otp_expires_at = (self._get_utc_now() + timedelta(minutes=5)).isoformat()
+        self._save_user(profile)
+        return True, f"OTP generated: {otp}"
+
+    def verify_otp(self, phone_number: str, otp: str) -> tuple[bool, str, Optional[UserProfile]]:
+        profile = next((u for u in self.users.values() if u.phone_number == phone_number), None)
+        if not profile:
+            return False, "Phone number not registered.", None
+        if not profile.otp_code or profile.otp_code != otp:
+            return False, "Invalid OTP.", None
+        if profile.otp_expires_at and self._get_utc_now().isoformat() > profile.otp_expires_at:
+            return False, "OTP expired.", None
+        profile.otp_code = ""
+        profile.otp_expires_at = None
+        self._save_user(profile)
+        return True, "OTP verified.", profile
 
     def get_profile(self, user_id: int) -> UserProfile:
         """Gets a user profile. If the user doesn't exist, it creates and saves them."""
