@@ -87,9 +87,9 @@ def test_admin_dashboard_unauthorized(client, engine):
     pass
 
 
-def test_admin_dashboard_authorized(client):
+def test_admin_dashboard_authorized(client, engine):
     """Test that an admin user can access the admin dashboard."""
-    # The route requires a valid X-Admin-Key header (default key is "admin-xio").
+    engine.admin_key = "admin-xio"
     response = client.get("/api/admin/dashboard", headers={"X-Admin-Key": "admin-xio"})
     assert response.status_code == 200
     data = response.get_json()
@@ -99,6 +99,7 @@ def test_admin_dashboard_authorized(client):
 
 def test_admin_set_config(client, engine):
     """Test that an admin can update bot configuration."""
+    engine.admin_key = "admin-xio"
     assert engine.bonus_value == 0.05  # Check initial value
 
     response = client.post(
@@ -114,6 +115,7 @@ def test_admin_set_config(client, engine):
 
 def test_admin_approve_withdrawal(client, engine):
     """Test the full withdrawal request and approval flow."""
+    engine.admin_key = "admin-xio"
     user_id = 888
     profile = engine.register_user(user_id, "Withdrawal User")
 

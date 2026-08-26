@@ -1,15 +1,14 @@
-"""Flask blueprint: auth endpoints."""
-"""
+r"""
 EarningMiniApp Auth Routes
 <environment_details>
-Current time: 2026-08-26T12:14:27+05:30
+Current time: 2026-08-26T12:30:01+05:30
 Working directory: C:\Users\dhiresh\OneDrive\Desktop\EarningMiniApp
 Workspace root folder: C:\Users\dhiresh\OneDrive\Desktop\EarningMiniApp
 </environment_details>
 """
 from __future__ import annotations
-
 import os
+
 from app.routes._helpers import (
     _check_rate_limit,
     _safe_int,
@@ -68,3 +67,4 @@ def telegram_auth() -> tuple[dict, int]:
     current_engine.register_user(user_id, first_name)
     token = current_engine.create_session(user_id)
     return jsonify({"token": token, "user_id": user_id, "name": first_name}), 200
+

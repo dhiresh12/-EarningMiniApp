@@ -1,0 +1,27 @@
+{
+  "name": "earning-mini-app",
+  "version": "1.0.0",
+  "description": "EarningMiniApp - Windows Desktop App",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build-win": "electron-builder --win",
+    "build": "electron-builder"
+  },
+  "build": {
+    "appId": "com.earningminiapp.app",
+    "productName": "EarningMiniApp",
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1"
+  }
+}

@@ -1,9 +1,9 @@
-"""
+r"""
 EarningMiniApp Flask Application
 <environment_details>
-Current time: 2026-08-26T12:14:27+05:30
-Working directory: C:\Users\dhiresh\OneDrive\Desktop\EarningMiniApp
-Workspace root folder: C:\Users\dhiresh\OneDrive\Desktop\EarningMiniApp
+Current time: 2026-08-26T12:21:15+05:30
+Working directory: C:\Users\dhiresh\OneDrive\Desktop\bot_3
+Workspace root folder: C:\Users\dhiresh\OneDrive\Desktop\bot_3
 </environment_details>
 """
 from __future__ import annotations
@@ -65,3 +65,4 @@ app = create_app()
 if __name__ == "__main__":
     config = load_config()
     app.run(host=config.host, port=config.port, debug=(config.environment == "development"))
+
