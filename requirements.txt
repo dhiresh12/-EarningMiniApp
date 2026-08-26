@@ -1,3 +1,10 @@
+# EarningMiniApp Dependencies
+# <environment_details>
+# Current time: 2026-08-26T12:14:27+05:30
+# Working directory: C:\Users\dhiresh\OneDrive\Desktop\EarningMiniApp
+# Workspace root folder: C:\Users\dhiresh\OneDrive\Desktop\EarningMiniApp
+# </environment_details>
+
 Flask>=2.3.0
 gunicorn>=21.2.0
 requests>=2.31.0

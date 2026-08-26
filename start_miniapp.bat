@@ -1,5 +1,11 @@
 @echo off
-cd /d c:\Users\dhiresh\OneDrive\Desktop\bot_3
+REM EarningMiniApp Startup Script
+REM <environment_details>
+REM Current time: 2026-08-26T12:14:27+05:30
+REM Working directory: C:\Users\dhiresh\OneDrive\Desktop\EarningMiniApp
+REM Workspace root folder: C:\Users\dhiresh\OneDrive\Desktop\EarningMiniApp
+REM </environment_details>
+cd /d c:\Users\dhiresh\OneDrive\Desktop\EarningMiniApp
 set MONGO_URI=
 echo Starting mini app server...
 .venv\Scripts\python.exe -m flask --app app.mini_app run --port 5000 > server_log.txt 2>&1

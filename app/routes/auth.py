@@ -1,7 +1,15 @@
 """Flask blueprint: auth endpoints."""
+"""
+EarningMiniApp Auth Routes
+<environment_details>
+Current time: 2026-08-26T12:14:27+05:30
+Working directory: C:\Users\dhiresh\OneDrive\Desktop\EarningMiniApp
+Workspace root folder: C:\Users\dhiresh\OneDrive\Desktop\EarningMiniApp
+</environment_details>
+"""
 from __future__ import annotations
-import os
 
+import os
 from app.routes._helpers import (
     _check_rate_limit,
     _safe_int,

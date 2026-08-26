@@ -3,6 +3,14 @@
 Each feature area lives in its own module so one broken endpoint
 does not prevent the rest of the app from starting.
 """
+"""
+EarningMiniApp Route Blueprints
+<environment_details>
+Current time: 2026-08-26T12:14:27+05:30
+Working directory: C:\Users\dhiresh\OneDrive\Desktop\EarningMiniApp
+Workspace root folder: C:\Users\dhiresh\OneDrive\Desktop\EarningMiniApp
+</environment_details>
+"""
 from __future__ import annotations
 
 from flask import Blueprint
