@@ -48,6 +48,7 @@
             color: var(--text); margin: 0; padding: 0 0 100px 0; min-height: 100vh;
           }
           .container { max-width: 480px; margin: 0 auto; padding: 16px 16px 24px; position: relative; z-index: 1; }
+          #auth-section { max-width: 480px; margin: 0 auto; padding: 16px; position: relative; z-index: 1; }
           .app-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: rgba(15,23,42,0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; }
           .brand { font-size: 17px; font-weight: 800; background: linear-gradient(135deg, var(--cyan), var(--primary), var(--magenta)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.3px; }
           .brand small { display: block; font-size: 9px; font-weight: 500; color: var(--text-dim); -webkit-text-fill-color: var(--text-dim); letter-spacing: 0.5px; text-transform: uppercase; }
@@ -3374,6 +3375,32 @@ function showPage(pageName) {
           });
 
           window.addEventListener('load', function(){
+            const token = localStorage.getItem('xio_token');
+            const userId = localStorage.getItem('xio_user_id');
+            if (!token || !userId) {
+              document.querySelectorAll('#auth-section .page').forEach(function(p){ p.classList.remove('active'); });
+              const loginPage = document.getElementById('page-login');
+              if (loginPage) loginPage.classList.add('active');
+              document.querySelector('.container').style.display = 'none';
+              document.querySelector('.app-header').style.display = 'none';
+              document.getElementById('auth-section').style.display = '';
+              return;
+            }
+            document.querySelector('.container').style.display = '';
+            document.querySelector('.app-header').style.display = '';
+            document.getElementById('auth-section').style.display = 'none';
+            document.getElementById('user-id').textContent = 'ID: ' + userId;
+            window.userId = parseInt(userId, 10);
+            window.authToken = token;
+            const originalFetch = window.fetch;
+            window.fetch = function(url, options) {
+              options = options || {};
+              options.headers = options.headers || {};
+              if (!options.headers['X-User-Token']) {
+                options.headers['X-User-Token'] = token;
+              }
+              return originalFetch(url, options);
+            };
             buildWheel();
             setSupportLinks();
             randomizeSocialProof();
