@@ -428,9 +428,12 @@ class BotEngine:
         mongo_uri = os.getenv("MONGO_URI")
         if mongo_uri and MongoClient is not None:
             self.client = MongoClient(mongo_uri)
-            self.db = self.client.get_default_database()
+            try:
+                self.db = self.client.get_default_database()
+            except Exception:
+                self.db = None
             if self.db is None:
-                self.db = self.client["bot_data"]
+                self.db = self.client.get_database("earningapp")
         elif mongomock is not None:
             self.client = mongomock.MongoClient("mongodb://localhost")
             self.db = self.client["bot_data"]
@@ -445,7 +448,9 @@ class BotEngine:
         self.bonus_value = 0.05
         self.admin_key = os.getenv("ADMIN_KEY")
         if not self.admin_key:
-            raise ValueError("ADMIN_KEY must be set in environment variables.")
+            if os.getenv("APP_ENV") == "production":
+                raise ValueError("ADMIN_KEY must be set in environment variables.")
+            self.admin_key = "dev-admin-key"
         self.engagement = EngagementLayer()
         self.support = SupportService()
         self.admin_service = AdminPanelService(self)
