@@ -18,7 +18,6 @@ def register_all_blueprints(app) -> None:
     """
     modules = [
         "app.routes.auth",
-        "app.routes.webhooks",
         "app.routes.ads",
         "app.routes.tasks",
         "app.routes.social",

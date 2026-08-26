@@ -152,29 +152,3 @@ def test_admin_approve_withdrawal(client, engine):
     final_request_state = engine.get_profile(user_id).withdrawals[0]
     assert final_request_state["status"] == "approved"
 
-
-def test_webhook_endpoint(client, engine, monkeypatch):
-    """Test that the webhook endpoint correctly processes a Telegram update."""
-    # 1. Mock the external API call to Telegram to prevent actual HTTP requests
-    mock_post = monkeypatch.setattr(requests, "post", lambda *a, **k: None)
-
-    # 2. Create a sample Telegram update payload for the /menu command
-    user_id = 12345
-    user_name = "WebhookTester"
-    update_payload = {
-        "update_id": 10000,
-        "message": {
-            "message_id": 1365,
-            "from": {"id": user_id, "is_bot": False, "first_name": user_name, "language_code": "en"},
-            "chat": {"id": user_id, "type": "private", "first_name": user_name},
-            "date": 1609459200,  # 2021-01-01
-            "text": "/menu",
-        },
-    }
-
-    # 3. Send the payload to the webhook endpoint
-    response = client.post("/webhook", json=update_payload)
-
-    # 4. Assert the webhook's immediate response is correct
-    assert response.status_code == 200
-    assert response.get_json() == {"status": "ok"}

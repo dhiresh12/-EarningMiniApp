@@ -8,8 +8,7 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
         <link rel="manifest" href="/manifest.json">
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://telegram.org https://cdn.jsdelivr.net; script-src 'self' 'unsafe-inline' https://telegram.org https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https:; frame-ancestors 'none';">
-        <script src="https://telegram.org/js/telegram-web-app.js"></script>
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://cdn.jsdelivr.net; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https:; frame-ancestors 'none';">
         <script>
           function escapeHtml(str) {
             if (str == null) return '';
@@ -426,6 +425,58 @@
             <button class="icon-btn" id="popularity-btn" onclick="showPage('popularity')">🔥</button>
             <button class="icon-btn" id="support-btn" onclick="openSupport()">💬</button>
             <button class="icon-btn" id="lang-btn" onclick="openLang()">🌐</button>
+          </div>
+        </div>
+
+        <!-- AUTH PAGES -->
+        <div id="auth-section">
+          <!-- Login -->
+          <div id="page-login" class="page active" style="padding: 40px 20px; text-align: center;">
+            <div style="font-size: 48px; margin-bottom: 16px;">🔐</div>
+            <h2 style="margin: 0 0 8px; font-size: 22px;">Welcome Back</h2>
+            <p style="color: var(--text-dim); font-size: 13px; margin: 0 0 24px;">Login to continue earning</p>
+            <div style="text-align: left; max-width: 360px; margin: 0 auto;">
+              <label style="font-size: 12px; color: var(--text-dim); margin-bottom: 4px; display: block;">Phone Number</label>
+              <input id="login-phone" type="tel" placeholder="+91 98765 43210" style="width: 100%; padding: 12px 14px; margin-bottom: 12px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; color: white; font-size: 14px;" />
+              <label style="font-size: 12px; color: var(--text-dim); margin-bottom: 4px; display: block;">Password</label>
+              <input id="login-password" type="password" placeholder="Enter your password" style="width: 100%; padding: 12px 14px; margin-bottom: 16px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; color: white; font-size: 14px;" />
+              <button class="btn" onclick="doLogin()">Login</button>
+              <p style="text-align: center; margin-top: 16px; font-size: 13px; color: var(--text-dim);">
+                Don't have an account? <a href="#" onclick="showPage('signup')" style="color: var(--primary); text-decoration: none; font-weight: 700;">Sign Up</a>
+              </p>
+            </div>
+          </div>
+
+          <!-- Signup -->
+          <div id="page-signup" class="page" style="padding: 40px 20px; text-align: center;">
+            <div style="font-size: 48px; margin-bottom: 16px;">📱</div>
+            <h2 style="margin: 0 0 8px; font-size: 22px;">Create Account</h2>
+            <p style="color: var(--text-dim); font-size: 13px; margin: 0 0 24px;">Start your earning journey</p>
+            <div style="text-align: left; max-width: 360px; margin: 0 auto;">
+              <label style="font-size: 12px; color: var(--text-dim); margin-bottom: 4px; display: block;">Full Name</label>
+              <input id="signup-name" type="text" placeholder="Your name" style="width: 100%; padding: 12px 14px; margin-bottom: 12px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; color: white; font-size: 14px;" />
+              <label style="font-size: 12px; color: var(--text-dim); margin-bottom: 4px; display: block;">Phone Number</label>
+              <input id="signup-phone" type="tel" placeholder="+91 98765 43210" style="width: 100%; padding: 12px 14px; margin-bottom: 12px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; color: white; font-size: 14px;" />
+              <label style="font-size: 12px; color: var(--text-dim); margin-bottom: 4px; display: block;">Password</label>
+              <input id="signup-password" type="password" placeholder="Min 6 characters" style="width: 100%; padding: 12px 14px; margin-bottom: 16px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; color: white; font-size: 14px;" />
+              <button class="btn" onclick="doSignup()">Create Account</button>
+              <p style="text-align: center; margin-top: 16px; font-size: 13px; color: var(--text-dim);">
+                Already have an account? <a href="#" onclick="showPage('login')" style="color: var(--primary); text-decoration: none; font-weight: 700;">Login</a>
+              </p>
+            </div>
+          </div>
+
+          <!-- OTP Verify -->
+          <div id="page-otp" class="page" style="padding: 40px 20px; text-align: center;">
+            <div style="font-size: 48px; margin-bottom: 16px;">📲</div>
+            <h2 style="margin: 0 0 8px; font-size: 22px;">Verify OTP</h2>
+            <p style="color: var(--text-dim); font-size: 13px; margin: 0 0 24px;">Enter the 6-digit code sent to your phone</p>
+            <div style="text-align: left; max-width: 360px; margin: 0 auto;">
+              <input id="otp-phone" type="hidden" />
+              <label style="font-size: 12px; color: var(--text-dim); margin-bottom: 4px; display: block;">OTP Code</label>
+              <input id="otp-code" type="text" placeholder="123456" maxlength="6" style="width: 100%; padding: 12px 14px; margin-bottom: 16px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; color: white; font-size: 14px; text-align: center; letter-spacing: 8px;" />
+              <button class="btn" onclick="doVerifyOTP()">Verify & Login</button>
+            </div>
           </div>
         </div>
 
@@ -1179,11 +1230,9 @@
             return html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
           }
           function getTelegram() {
-            try { if (window.Telegram && window.Telegram.WebApp) return window.Telegram.WebApp; } catch (e) {}
             return null;
           }
           const tg = getTelegram();
-          if (tg) { try { tg.expand(); } catch (e) {} }
 
           function getOrCreateBrowserId() {
             try {
@@ -1198,22 +1247,21 @@
           }
           var userId = (function(){
             try {
-              const u = tg && tg.initDataUnsafe && tg.initDataUnsafe.user;
-              if (u && u.id) return u.id;
+              const u = getOrCreateBrowserId();
+              if (u) return parseInt(u, 10);
             } catch (e) {}
-            return getOrCreateBrowserId();
+            return 777;
           })();
           var userName = (function(){
             try {
-              const u = tg && tg.initDataUnsafe && tg.initDataUnsafe.user;
-              if (u && u.first_name) return u.first_name;
+              const name = localStorage.getItem('xio_user_name');
+              if (name) return name;
             } catch (e) {}
             return 'Guest';
           })();
 
           const translations = {{translations_json | safe}};
           const langConfig = {{lang_config_json | safe}};
-          const botUsername = '{{bot_username}}';
           const supportLinks = {{support_links_json | safe}};
           let currentLang = 'en';
           try { currentLang = localStorage.getItem('xio_lang') || 'en'; } catch (e) {}
@@ -1477,10 +1525,7 @@ function t(key) {
           function openTaskChannel(btn) {
             const taskId = btn.getAttribute('data-task');
             const url = window.__taskUrls[taskId] || '';
-            // Open the channel/group link
-            if (tg) { try { tg.openTelegramLink(url); return; } catch (e) {} }
             window.open(url, '_blank');
-            // Show the verify button
             const verifyBtn = document.querySelector('[data-task="' + taskId + '"][data-action="verify"]');
             if (verifyBtn) verifyBtn.style.display = 'block';
             btn.innerText = '📢 Opened! Now tap "I have Joined" below';
@@ -1670,7 +1715,6 @@ async function completeTask(btn) {
           function shareInvite() {
             const link = document.getElementById('invite-link').value;
             const shareUrl = 'https://t.me/share/url?url=' + encodeURIComponent(link) + '&text=' + encodeURIComponent('Join Xio_PayPlus and earn real money watching ads!');
-            if (tg) { try { tg.openTelegramLink(shareUrl); return; } catch (e) {} }
             window.open(shareUrl, '_blank');
           }
 
@@ -1911,7 +1955,6 @@ async function completeTask(btn) {
           }
 
           function openTelegramLink(url) {
-            if (tg) { try { tg.openTelegramLink(url); return; } catch (e) {} }
             window.open(url, '_blank');
           }
 
@@ -2624,7 +2667,14 @@ function showPage(pageName) {
 
           // --- Haptics & Sound ---
           function haptic(type) {
-            try { if (tg && tg.HapticFeedback) { tg.HapticFeedback.impactOccurred(type); } } catch(e) {}
+            try {
+              if (navigator.vibrate) {
+                if (type === 'light') navigator.vibrate(10);
+                else if (type === 'medium') navigator.vibrate(20);
+                else if (type === 'heavy') navigator.vibrate(40);
+                else navigator.vibrate(10);
+              }
+            } catch(e) {}
           }
           function playSound(type) {
             try {
