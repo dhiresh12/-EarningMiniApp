@@ -35,6 +35,20 @@ def create_app(engine: BotEngine | None = None) -> Flask:
             provider=ads_manager.get_config()["provider"],
         )
 
+    @app.get("/manifest.json")
+    def manifest() -> tuple[dict, int, dict]:
+        config = load_config()
+        data = {
+            "name": config.app_name,
+            "short_name": config.app_name,
+            "start_url": "/",
+            "display": "standalone",
+            "background_color": "#0a0e1a",
+            "theme_color": "#6366f1",
+            "orientation": "portrait",
+        }
+        return jsonify(data), 200, {"Content-Type": "application/json"}
+
     return app
 
 
